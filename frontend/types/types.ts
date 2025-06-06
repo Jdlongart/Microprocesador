@@ -1,10 +1,9 @@
 export interface Instruccion {
   id?: number;
-  nombre: string;
-  codigo: string;
-  descripcion?: string;
-  sintaxis: string;
-  usuario_id?: number;
+  sentencia: string;
+  id_dir: number;
+  id_registro?: number;
+  id_usuario?: number;
 }
 
 export interface Registros {

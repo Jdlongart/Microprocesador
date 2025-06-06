@@ -10,15 +10,15 @@ const router = Router();
 // Tipado completo para Request y Response
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body as { username: string; password: string }; // Tipado del body
-    if (!username || !password) {
+    const { nombre, clave } = req.body as { nombre: string; clave: string }; // Tipado del body
+    if (!nombre || !clave) {
       return res.status(400).json({ message: 'Username y password son requeridos' });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(clave, 10);
     
     const { rows } = await pool.query(
-      'INSERT INTO usuarios (username, password) VALUES ($1, $2) RETURNING id, username',
-      [username, hashedPassword]
+      'INSERT INTO usuarios (nombre, clave) VALUES ($1, $2) RETURNING id, nombre',
+      [nombre, hashedPassword]
     );
     
     return res.status(201).json(rows[0]); // Asegúrate de retornar la respuesta
@@ -29,18 +29,18 @@ router.post('/register', async (req: Request, res: Response) => {
 
 router.post('/login', async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body as { username: string; password: string };
-    if (!username || !password) {
+    const { nombre, clave } = req.body as { nombre: string; clave: string };
+    if (!nombre || !clave) {
       return res.status(400).json({ message: 'Username y password son requeridos' });
     }
-    const { rows } = await pool.query('SELECT * FROM usuarios WHERE username = $1', [username]);
+    const { rows } = await pool.query('SELECT * FROM usuarios WHERE nombre = $1', [nombre]);
     
-    if (rows.length === 0 || !(await bcrypt.compare(password, rows[0].password))) {
+    if (rows.length === 0 || !(await bcrypt.compare(clave, rows[0].clave))) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
     
     const token = jwt.sign({ userId: rows[0].id }, JWT_SECRET, { expiresIn: '1h' });
-    return res.json({ token, user: { id: rows[0].id, username: rows[0].username } }); // Usa return
+    return res.json({ token, user: { id: rows[0].id, nombre: rows[0].nombre } }); // Usa return
   } catch (error) {
     return res.status(500).json({ message: 'Error al iniciar sesión' });
   }

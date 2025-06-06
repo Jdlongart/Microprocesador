@@ -6,20 +6,18 @@ interface InstruccionFormProps {
 
 const InstruccionForm: React.FC<InstruccionFormProps> = ({ onSubmit }) => {
   const [instruccion, setInstruccion] = useState({
-    nombre: '',
-    codigo: '',
-    descripcion: '',
-    sintaxis: ''
+    sentencia: '',
+    registro: '',
+    dir: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(instruccion);
     setInstruccion({
-      nombre: '',
-      codigo: '',
-      descripcion: '',
-      sintaxis: ''
+    sentencia: '',
+    registro: '',
+    dir: '',
     });
   };
 

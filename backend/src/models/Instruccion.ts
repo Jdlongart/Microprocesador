@@ -1,12 +1,11 @@
 import pool from '../config/database';
 
 export interface Instruccion {
-  id?: number;
-  nombre: string;
-  codigo: string;
-  descripcion?: string;
-  sintaxis: string;
-  usuario_id?: number;
+  id: number;
+  sentencia: string;
+  id_dir: number;
+  id_registro: number;
+  id_usuario: number;
 }
 
 export const getAllInstrucciones = async (): Promise<Instruccion[]> => {
@@ -15,10 +14,10 @@ export const getAllInstrucciones = async (): Promise<Instruccion[]> => {
 };
 
 export const createInstruccion = async (instruccion: Instruccion): Promise<Instruccion> => {
-  const { nombre, codigo, descripcion, sintaxis, usuario_id } = instruccion;
+  const { sentencia, id_dir, id_registro, id_usuario } = instruccion;
   const { rows } = await pool.query(
-    'INSERT INTO instrucciones (nombre, codigo, descripcion, sintaxis, usuario_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-    [nombre, codigo, descripcion, sintaxis, usuario_id || null]
+    'INSERT INTO instrucciones (sentencia, id_dir, id_registro, id_usuario) VALUES ($1, $2, $3, $4) RETURNING *',
+    [ sentencia, id_dir, id_registro, id_usuario  || null]
   );
   return rows[0];
 };
