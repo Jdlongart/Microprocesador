@@ -9,8 +9,8 @@ const InstruccionList: React.FC<InstruccionListProps> = ({ instrucciones }) => {
     <div>
       {instrucciones.map(inst => (
         <div key={inst.id}>
-          <h3>{inst.nombre}</h3>
-          <p>{inst.codigo}</p>
+          <h3>{inst.sentencia}</h3>
+          <p>{inst.sentencia}</p>
         </div>
       ))}
     </div>
