@@ -1,22 +1,32 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import InstruccionesPage from './pages/InstruccionesPage';
-import SimuladorPage from './pages/SimuladorPage'; 
-import LoginPage from './pages/LoginPage';
-import Navbar from './components/NavBar';
+import { AuthProvider } from './contexts/AuthContext';
+import Login from './auth/Login';
+import Register from './auth/Register';
+import Dashboard from './pages/Dashboard';
+import SimulatorPage from './pages/Simulator';
+import ManagementPage from './pages/Management';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import Layout from './components/common/Layout';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Navbar />
-      <div className="container mt-4">
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/" element={<InstruccionesPage />} />
-          <Route path="/simulador" element={<SimuladorPage />} />
-           <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/simulator" element={<SimulatorPage />} />
+              <Route path="/management" element={<ManagementPage />} />
+            </Route>
+          </Route>
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 
