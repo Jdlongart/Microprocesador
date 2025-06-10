@@ -1,17 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Program } from "./program.model";
+import mongoose, { Document } from 'mongoose';
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ unique: true })
-  name: string;
-
-  @Column()
+export interface IUser extends Document {
+  username: string;
+  email: string;
   password: string;
-
-  @OneToMany(() => Program, program => program.user)
-  programs: Program[];
 }
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+});
+
+const User = mongoose.model<IUser>('User', userSchema);
+
+export default User;
