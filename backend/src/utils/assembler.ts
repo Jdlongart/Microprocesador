@@ -1,0 +1,1 @@
+// Este archivo incluye funciones utilitarias que pueden ser utilizadas en diferentes partes de la aplicación para evitar la duplicación de código.

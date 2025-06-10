@@ -1,22 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import instruccionesRoutes from './routes/instrucciones';
-import authRoutes from './routes/auth';
+import app from "./app";
+import { AppDataSource } from "./config/db";
+import dotenv from "dotenv";
 
-const app = express();
-const PORT = 5000;
+dotenv.config();
 
-app.use(cors());
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.json({ message: 'API del Simulador de Microprocesadores' });
-});
-
-// Rutas
-app.use('/api/instrucciones', instruccionesRoutes);
-app.use('/api/auth', authRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+AppDataSource.initialize()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Error al iniciar la base de datos", error);
+    process.exit(1);
+  });
